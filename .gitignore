@@ -27,3 +27,5 @@ src/output/*.csv
 # --- System Files ---
 .DS_Store
 Thumbs.db
+
+Dockerfile

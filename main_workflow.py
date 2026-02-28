@@ -4,6 +4,8 @@ import logging
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
+from google.cloud import storage
+from io import StringIO
 
 # Load environment
 load_dotenv()
@@ -11,6 +13,37 @@ load_dotenv()
 # Logger configuration
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
+
+def get_data():
+    # Check if we were triggered by a bucket event
+    bucket_name = os.getenv("INPUT_BUCKET")
+    file_name = os.getenv("INPUT_FILE")
+
+    if bucket_name and file_name:
+        logging.info(f"Processing event-triggered file: gs://{bucket_name}/{file_name}")
+        client = storage.Client()
+        bucket = client.bucket(bucket_name)
+        blob = bucket.blob(file_name)
+        return pd.read_csv(StringIO(blob.download_as_text()))
+    
+    # Fallback for local testing
+    logging.info("No event data found. Falling back to local data.csv")
+    return pd.read_csv("src/data/data.csv")
+
+def initialize_agent() -> genai.Client:
+    project = os.getenv("GOOGLE_CLOUD_PROJECT")
+    location = os.getenv("GOOGLE_CLOUD_LOCATION")
+    
+    if not project or not location:
+        # This will show up clearly in your Cloud Logs
+        logging.error(f"Missing Config: Project={project}, Location={location}")
+        raise ValueError("Critical: Project and Location env vars are not set!")
+
+    return genai.Client(
+        vertexai=True,
+        project=project,
+        location=location
+    )
 
 def initialize_genai_client() -> genai.Client:
     """Initializes the Vertex AI client using .env config."""
