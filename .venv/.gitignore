@@ -214,3 +214,5 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+.key/project-1-488800-6e51c1a8513c.json
