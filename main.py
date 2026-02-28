@@ -18,8 +18,6 @@ def load_data_from_gcs(bucket_name, file_name):
     return pd.read_csv(StringIO(data))
 
 # In your main() function, change the path:
-# df = load_data_from_gcs("mqmr-weekly-audits-project-1", "test_audit.csv")
-
 df = load_data_from_gcs("mqmr-weekly-audits-project-1", "test_audit.csv")
 
 load_dotenv()
