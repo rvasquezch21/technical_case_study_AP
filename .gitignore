@@ -1,0 +1,31 @@
+# --- Security & Credentials ---
+# Hide the specific JSON key and any other JSON files in the key folder
+key/*.json
+*.json
+
+# Hide all environment variable files
+.env
+.env.local
+.env.*
+
+# --- Python Environment ---
+# Hide the virtual environment
+.venv/
+env/
+venv/
+ENV/
+
+# --- Python Cache ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- Project Specifics ---
+# Hide data outputs if they contain sensitive PII
+src/output/*.csv
+
+# --- System Files ---
+.DS_Store
+Thumbs.db
+
+Dockerfile

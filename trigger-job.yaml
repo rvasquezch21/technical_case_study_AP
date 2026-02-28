@@ -1,0 +1,21 @@
+main:
+  params: [event]
+  steps:
+    - init:
+        assign:
+          - bucket: ${event.data.bucket}
+          - file: ${event.data.name}
+          - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+    - run_job:
+        call: googleapis.run.v1.namespaces.jobs.run
+        args:
+          name: ${"namespaces/" + project_id + "/jobs/audit-processor-job"}
+          location: "us-central1"
+          body:
+            overrides:
+              containerOverrides:
+                - env:
+                    - name: INPUT_BUCKET
+                      value: ${bucket}
+                    - name: INPUT_FILE
+                      value: ${file}
