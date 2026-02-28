@@ -3,14 +3,41 @@ import logging
 from typing import List, Dict
 from google import genai
 from google.genai import types
+import os
+from dotenv import load_dotenv
+
+# 1. Load variables from .env into os.environ
+load_dotenv()
+
+def initialize_agent() -> genai.Client:
+    """
+    Initializes the Vertex AI Gemini Client using .env values.
+    The SDK automatically detects:
+    - GOOGLE_CLOUD_PROJECT
+    - GOOGLE_CLOUD_LOCATION
+    - GOOGLE_API_KEY (used as the bearer token)
+    """
+    try:
+        # No arguments needed; it reads directly from the environment
+        client = genai.Client(vertexai=True)
+        print(f"Connected to Project: {os.getenv('GOOGLE_CLOUD_PROJECT')}")
+        return client
+    except Exception as e:
+        print(f"Error: Check your .env file and Token validity. {e}")
+        raise
+
+# Example Usage within your existing flow
+def run_pipeline():
+    client = initialize_agent()
+    # ... rest of your logic from Part 2 ...
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 # --- AGENT CONFIGURATION ---
-PROJECT_ID = "your-project-id"  # Replace with your GCP Project ID
-LOCATION = "us-central1"
+PROJECT_ID = os.getenv("GOOGLE_CLOUD_PROJECT")
+LOCATION = os.getenv("GOOGLE_CLOUD_LOCATION")
 MODEL_ID = "gemini-2.5-flash"
 
 SYSTEM_INSTRUCTION = """
