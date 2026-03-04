@@ -13,7 +13,7 @@ The project is divided into four distinct phases, moving from core data logic to
 * **Scoring:** Implements a custom risk-scoring algorithm that assigns a weight to each compliance failure.
 
 ### Phase 2: AI Agent & Prompt Engineering
-* **Intelligence:** Integration with **Gemini 1.5 Flash** via the Vertex AI API.
+* **Intelligence:** Integration with **Gemini 2.0 Flash** via the Vertex AI API.
 * **Hallucination Prevention:** Utilizes role-prompting (Senior Compliance Director) and strict grounding constraints to ensure the AI only uses provided audit data.
 
 ### Phase 3: Cloud Infrastructure (GCP)
